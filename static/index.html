@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Poor Man's Tweet</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h1>Tweets</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Content</th>
+          <th>DateTime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="tweet in tweets" :key="tweet.id">
+          <td>{{ tweet.username }}</td>
+          <td>{{ tweet.content }}</td>
+          <td>{{ tweet.created_dt }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // defined tweetsApi as constant, but it should be loaded from .env file for production configuration
+    const tweetsApi = 'http://localhost:8000/api/tweets/';
+  </script>
+  <script type="text/javascript">
+    const { createApp } = Vue
+    createApp({
+      data() {
+        return {
+          tweets: []
+        }
+      },
+      methods: {
+        async getTweets() {
+          try {
+            // fetch tasks
+            const response = await axios.get(tweetsApi);
+            // set the data returned as tasks
+            this.tweets = response.data; 
+          } catch (error) {
+            // log the error
+            console.log(error);
+          }
+        },
+      },
+      created() {
+        // Fetch tasks on page load
+        this.getTweets();
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
