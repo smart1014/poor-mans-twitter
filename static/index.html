@@ -41,18 +41,15 @@
       methods: {
         async getTweets() {
           try {
-            // fetch tasks
             const response = await axios.get(tweetsApi);
-            // set the data returned as tasks
-            this.tweets = response.data; 
+            this.tweets = response.data;
           } catch (error) {
-            // log the error
             console.log(error);
           }
         },
       },
       created() {
-        // Fetch tasks on page load
+        // Fetch tweets on page load
         this.getTweets();
       }
     }).mount('#app')
